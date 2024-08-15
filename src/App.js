@@ -15,14 +15,20 @@ import DialogTitle from "@mui/material/DialogTitle";
 // import Typography from "@mui/joy/Typography";
 // import DrawerAnchor from "./components/Drawer";
 // import SeparatorBreadcrumbs from "./components/Breadcrumbs";
+import Typography from "@mui/material/Typography";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+import PrimarySearchAppBar from "./components/Search";
 
 function App() {
   const [widget, setWidget] = useState({ title: "", text: "" });
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]); //search
   const [openWidget, setOpenWidget] = useState(false);
   const [open, setOpen] = useState(false);
   const [CategoryName, setCategoryName] = useState();
   const [section, setSection] = useState("");
+  const [title, setTitle] = useState([]);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -36,8 +42,9 @@ function App() {
     setData([...data, { CategoryName: CategoryName, widget: [] }]);
     setOpen(false);
   }
-
+  console.log(data);
   function handleWidget() {
+    setTitle([...title, widget.title]);
     const categoryIndex = data.findIndex((el) => el.CategoryName === section);
     if (categoryIndex !== -1) {
       const updatedData = [...data];
@@ -66,6 +73,7 @@ function App() {
     updatedData.splice(categoryIndex, 1);
     setData(updatedData);
   }
+  console.log(filteredData);
 
   return (
     <div
@@ -75,6 +83,13 @@ function App() {
         height: "100vh",
       }}
     >
+      <div>
+        <PrimarySearchAppBar
+          title={title}
+          filteredData={filteredData}
+          setFilteredData={setFilteredData}
+        />
+      </div>
       <div
         style={{
           margin: "0 10px",
@@ -85,17 +100,16 @@ function App() {
         <div
           style={{ margin: "20px 10px", fontSize: "20px", fontWeight: "bold" }}
         >
-          {/* <Breadcrumbs
-            separator={<KeyboardArrowRight />}
-            aria-label="breadcrumbs"
-          >
-            {["Home"].map((item) => (
-              <Link key={item} color="neutral" href="#separators">
-                {item}
-              </Link>
-            ))}
-            <Typography>Dashboard V2</Typography>
-          </Breadcrumbs> */}
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link
+              underline="hover"
+              color="inherit"
+              href="/material-ui/getting-started/installation/"
+            >
+              Home
+            </Link>
+            <Typography color="text.primary"> Dashboard</Typography>
+          </Breadcrumbs>
         </div>
         <div
           style={{
@@ -124,7 +138,7 @@ function App() {
                 },
               }}
             >
-              Add Widgets ➕
+              Add Category ➕
             </Button>
           </div>{" "}
           {/* <div>
