@@ -23,6 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 // import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
+import { Button, Grid } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -30,6 +31,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Paper } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -238,17 +240,45 @@ export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
                 flexDirection: "column",
               }}
             >
-              <div style={{ display: "flex", width: "100%" }}>
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  backgroundColor: "Navy",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginLeft: "30px",
+                    color: "white",
+                  }}
+                >
+                  Add Widgets
+                </div>
+
                 <IconButton
                   size="large"
                   edge="start"
                   color="inherit"
                   aria-label="open drawer"
-                  sx={{ mr: 2, marginLeft: "auto" }}
+                  sx={{ mr: 2, marginLeft: "auto", color: "white" }}
                   onClick={() => setIsDrawerOpen(false)}
                 >
                   <CloseIcon />
                 </IconButton>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: "20px",
+                  marginTop: "20px",
+                  fontSize: "20px",
+                }}
+              >
+                Personalise your dashboard by adding the following widget
               </div>
               <TabContext value={tabNumber}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -263,16 +293,111 @@ export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
                     <FormControlLabel
                       control={<Checkbox defaultChecked />}
                       label="Widget 1"
+                      sx={{
+                        display: "flex",
+                        alignItems: "left",
+                        justifyContent: "left",
+                        textTransform: "none",
+                        backgroundColor: "white",
+                        color: "Red",
+                        border: "2px solid #ccc",
+                        borderRadius: "4px",
+                        marginLeft: "8px",
+                        marginRight: "8px",
+                        "&:hover": {
+                          backgroundColor: "transparent",
+                          color: "#007bff",
+                          borderColor: "#007bff",
+                        },
+                      }}
                     />
                     <FormControlLabel
                       control={<Checkbox defaultChecked />}
                       label="Widget 2"
+                      sx={{
+                        display: "flex",
+                        alignItems: "left",
+                        justifyContent: "left",
+                        textTransform: "none",
+                        backgroundColor: "white",
+                        color: "red",
+                        border: "2px solid #ccc",
+                        borderRadius: "4px",
+                        marginLeft: "8px",
+                        marginRight: "8px",
+                        marginTop: "10px",
+                        "&:hover": {
+                          backgroundColor: "transparent",
+                          color: "#007bff",
+                          borderColor: "#007bff",
+                        },
+                      }}
                     />
                   </FormGroup>
                 </TabPanel>
                 <TabPanel value="2">Panel 2</TabPanel>
                 <TabPanel value="3">Panel 3</TabPanel>
               </TabContext>
+              <div>
+                <div
+                  sx={{
+                    position: "relative",
+                  }}
+                >
+                  <Button
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      textTransform: "none",
+                      backgroundColor: "white",
+                      color: "black",
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      position: "absolute", // or "absolute" if it's inside a relative container
+                      bottom: 16, // distance from the bottom of the page/container
+                      left: 700, // distance from the right of the page/container
+                      "&:hover": {
+                        backgroundColor: "navy",
+                        color: "white",
+                        borderColor: "#007bff",
+                      },
+                    }}
+                  >
+                    Confirm
+                  </Button>
+                </div>
+
+                <div
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  <Button
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      textTransform: "none",
+                      backgroundColor: "whte",
+                      color: "black",
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      position: "absolute", // or "absolute" if it's inside a relative container
+                      bottom: 16, // distance from the bottom of the page/container
+                      left: 625, // distance from the right of the page/container
+                      "&:hover": {
+                        backgroundColor: "Navy",
+                        color: "white",
+                        borderColor: "#007bff",
+                      },
+                    }}
+                    onClick={() => setIsDrawerOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
             </div>
           </Drawer>
 
