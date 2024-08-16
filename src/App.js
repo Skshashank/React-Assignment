@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { Button, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -9,26 +9,30 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-// import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-// import Breadcrumbs from "@mui/joy/Breadcrumbs";
-// import Link from "@mui/joy/Link";
-// import Typography from "@mui/joy/Typography";
-// import DrawerAnchor from "./components/Drawer";
-// import SeparatorBreadcrumbs from "./components/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import PrimarySearchAppBar from "./components/Search";
+import SyncIcon from "@mui/icons-material/Sync";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import Divider from "@mui/material/Divider";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AddIcon from "@mui/icons-material/Add";
 
 function App() {
   const [widget, setWidget] = useState({ title: "", text: "" });
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); //search
+  const [filteredData, setFilteredData] = useState([]); // search
   const [openWidget, setOpenWidget] = useState(false);
   const [open, setOpen] = useState(false);
   const [CategoryName, setCategoryName] = useState();
   const [section, setSection] = useState("");
   const [title, setTitle] = useState([]);
+
+  useEffect(() => {
+    setFilteredData(data); // Initialize filteredData with all categories and widgets
+  }, [data]);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -42,7 +46,7 @@ function App() {
     setData([...data, { CategoryName: CategoryName, widget: [] }]);
     setOpen(false);
   }
-  console.log(data);
+
   function handleWidget() {
     setTitle([...title, widget.title]);
     const categoryIndex = data.findIndex((el) => el.CategoryName === section);
@@ -73,12 +77,11 @@ function App() {
     updatedData.splice(categoryIndex, 1);
     setData(updatedData);
   }
-  console.log(filteredData);
 
   return (
     <div
       style={{
-        padding: "20px 30px",
+        padding: "0px 0px",
         backgroundColor: "#EDF2FA",
         height: "100vh",
       }}
@@ -86,73 +89,152 @@ function App() {
       <div>
         <PrimarySearchAppBar
           title={title}
-          filteredData={filteredData}
+          data={data}
           setFilteredData={setFilteredData}
         />
       </div>
       <div
         style={{
-          margin: "0 10px",
-          display: "flex",
-          justifyContent: "space-between",
+          marginTop: "40px",
         }}
       >
         <div
-          style={{ margin: "20px 10px", fontSize: "20px", fontWeight: "bold" }}
-        >
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link
-              underline="hover"
-              color="inherit"
-              href="/material-ui/getting-started/installation/"
-            >
-              Home
-            </Link>
-            <Typography color="text.primary"> Dashboard</Typography>
-          </Breadcrumbs>
-        </div>
-        <div
           style={{
             display: "flex",
-            justifyContent: "center",
-            width: "400px",
+            justifyContent: "space-between",
             alignItems: "center",
+            width: "100%",
           }}
         >
-          <div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginRight: "auto",
+            }}
+          >
+            <h4
+              style={{
+                marginLeft: "20px",
+                fontSize: "1.75rem",
+                fontWeight: "bold",
+                color: "black",
+              }}
+            >
+              Dashboard
+            </h4>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <Button
               variant="contained"
-              onClick={() => {
-                setOpen(true);
-              }}
+              onClick={() => setOpen(true)}
               sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 textTransform: "none",
                 backgroundColor: "white",
                 color: "black",
                 border: "1px solid #ccc",
-                borderRadius: "8px", // Set border radius
+                borderRadius: "8px",
                 "&:hover": {
-                  backgroundColor: "#007bff", // Blue color on hover
-                  color: "white", // White text color on hover
-                  borderColor: "#007bff", // Border color on hover
+                  backgroundColor: "transparent",
+                  color: "#007bff",
+                  borderColor: "#007bff",
                 },
               }}
             >
-              Add Category ➕
+              Add Category <AddIcon />
             </Button>
-          </div>{" "}
-          {/* <div>
-            <DrawerAnchor />
-          </div> */}
+            <Button
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textTransform: "none",
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                marginLeft: "20px",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  color: "#007bff",
+                  borderColor: "#007bff",
+                },
+              }}
+            >
+              <SyncIcon />
+            </Button>
+            <Button
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textTransform: "none",
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                marginLeft: "20px",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  color: "#007bff",
+                  borderColor: "#007bff",
+                },
+              }}
+            >
+              <MoreVertIcon />
+            </Button>
+            <Button
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textTransform: "none",
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                marginLeft: "20px",
+                marginRight: "20px",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  color: "#007bff",
+                  borderColor: "#007bff",
+                },
+              }}
+            >
+              <AccessTimeFilledIcon />
+              <Divider
+                orientation="vertical"
+                flexItem
+                style={{ color: "black", margin: "0 6px" }}
+              />
+              Last 2 Days
+              <KeyboardArrowDownIcon sx={{ marginLeft: "2px" }} />
+            </Button>
+          </div>
         </div>
       </div>
 
       <Grid container>
-        {data?.map((el, categoryIndex) => (
+        {filteredData?.map((el, categoryIndex) => (
           <Grid
             item
             md={12}
-            sx={{ marginBottom: "10px", padding: "20px" }}
+            sx={{
+              marginBottom: "10px",
+              padding: "20px",
+              marginLeft: "16px",
+              marginRight: "16px",
+            }}
             key={categoryIndex}
           >
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -256,10 +338,10 @@ function App() {
             component: "form",
           }}
         >
-          <DialogTitle>Add CategoryName</DialogTitle>
+          <DialogTitle>Add Category Name</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To add category, please enter Category Name here.
+              To add Category, please enter Category Name here.
             </DialogContentText>
             <TextField
               autoFocus
@@ -328,10 +410,8 @@ function App() {
                 width: "550px",
                 margin: "20px 0px",
               }}
-              rows={3}
-              cols={10}
-              label="Details"
-            ></textarea>
+              placeholder="Please enter the text"
+            />
           </DialogContent>
           <DialogActions>
             <Button
