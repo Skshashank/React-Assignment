@@ -11,7 +11,7 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-//
+// About Assignment and it's features. //
 
 1. Created a widget app which are particularly categorized with the help of React, MUI and custom inline CSS. 
 
