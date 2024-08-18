@@ -29,6 +29,8 @@ function App() {
   const [CategoryName, setCategoryName] = useState();
   const [section, setSection] = useState("");
   const [title, setTitle] = useState([]);
+  const [toDeleteData, setToDeleteData] = useState([]);
+  const [canDelete, setCanDelete] = useState(false);
 
   useEffect(() => {
     setFilteredData(data); // Initialize filteredData with all categories and widgets
@@ -58,6 +60,7 @@ function App() {
       ];
       setData(updatedData);
     }
+    setWidget({ title: "", text: "" });
     setOpenWidget(false);
   }
 
@@ -83,7 +86,7 @@ function App() {
       style={{
         padding: "0px 0px",
         backgroundColor: "#EDF2FA",
-        height: "100vh",
+        height: "auto",
       }}
     >
       <div>
@@ -91,6 +94,10 @@ function App() {
           title={title}
           data={data}
           setFilteredData={setFilteredData}
+          filteredData={filteredData}
+          toDeleteData={toDeleteData}
+          setToDeleteData={setToDeleteData}
+          setCanDelete={setCanDelete}
         />
       </div>
       <div

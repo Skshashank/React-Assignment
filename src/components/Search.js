@@ -75,7 +75,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
+export default function PrimarySearchAppBar({
+  title,
+  data,
+  setFilteredData,
+  filteredData,
+  toDeleteData,
+  setToDeleteData,
+  setCanDelete,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -214,6 +222,37 @@ export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
     setFilteredData(filteredData);
   };
 
+  const handleCheckBoxChange = (e, categoryName, widgetName) => {
+    if (!e.target.value) {
+      setToDeleteData([
+        ...toDeleteData,
+        {
+          categoryName: categoryName,
+          widgetName: widgetName,
+        },
+      ]);
+    }
+  };
+
+  const handleButtonClick = () => {
+    // Perform delete operation
+    const updatedData = data.map((category) => ({
+      ...category,
+      widget: category.widget.filter(
+        (widget) =>
+          !toDeleteData.some(
+            (item) =>
+              item.categoryName === category.categoryName &&
+              item.widgetName === widget.widgetName
+          )
+      ),
+    }));
+
+    setFilteredData(updatedData); // Update filtered data if needed
+    setToDeleteData([]); // Clear toDeleteData
+    setIsDrawerOpen(false); // Close the drawer
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ background: "white" }}>
@@ -282,62 +321,76 @@ export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
               </div>
               <TabContext value={tabNumber}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                  <TabList onChange={handleTabChange} textColor="secondary">
-                    <Tab label="One" value="1" />
-                    <Tab label="Two" value="2" />
-                    <Tab label="Three" value="3" />
+                  <TabList
+                    onChange={handleTabChange}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    aria-label="Category Tabs"
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "nowrap",
+                      overflowX: "auto",
+                      width: "100%",
+                    }}
+                  >
+                    {filteredData?.map((el, categoryIndex) => (
+                      <Tab
+                        label={el.CategoryName}
+                        value={categoryIndex}
+                        key={`tab-${categoryIndex}`}
+                      />
+                    ))}
                   </TabList>
                 </Box>
-                <TabPanel value="1">
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox defaultChecked />}
-                      label="Widget 1"
-                      sx={{
-                        display: "flex",
-                        alignItems: "left",
-                        justifyContent: "left",
-                        textTransform: "none",
-                        backgroundColor: "white",
-                        color: "Red",
-                        border: "2px solid #ccc",
-                        borderRadius: "4px",
-                        marginLeft: "8px",
-                        marginRight: "8px",
-                        "&:hover": {
-                          backgroundColor: "transparent",
-                          color: "#007bff",
-                          borderColor: "#007bff",
-                        },
-                      }}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox defaultChecked />}
-                      label="Widget 2"
-                      sx={{
-                        display: "flex",
-                        alignItems: "left",
-                        justifyContent: "left",
-                        textTransform: "none",
-                        backgroundColor: "white",
-                        color: "red",
-                        border: "2px solid #ccc",
-                        borderRadius: "4px",
-                        marginLeft: "8px",
-                        marginRight: "8px",
-                        marginTop: "10px",
-                        "&:hover": {
-                          backgroundColor: "transparent",
-                          color: "#007bff",
-                          borderColor: "#007bff",
-                        },
-                      }}
-                    />
-                  </FormGroup>
-                </TabPanel>
-                <TabPanel value="2">Panel 2</TabPanel>
-                <TabPanel value="3">Panel 3</TabPanel>
+
+                {filteredData?.map((el, categoryIndex) => (
+                  <TabPanel
+                    key={`panel-${categoryIndex}`}
+                    value={categoryIndex}
+                  >
+                    <FormGroup>
+                      {el?.widget?.map((e, widgetIndex) => (
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              onChange={(e) =>
+                                handleCheckBoxChange(
+                                  e,
+                                  el.categoryName,
+                                  e.widgetName
+                                )
+                              }
+                              defaultChecked
+                            />
+                          }
+                          label={e.text}
+                          key={`checkbox-${widgetIndex}`}
+                          sx={{
+                            display: "flex",
+                            alignItems: "left",
+                            justifyContent: "left",
+                            textTransform: "none",
+                            backgroundColor: "white",
+                            color: "Red",
+                            border: "2px solid #ccc",
+                            borderRadius: "4px",
+                            marginLeft: "8px",
+                            marginRight: "8px",
+                            marginBottom: "8px",
+                            "&:hover": {
+                              backgroundColor: "transparent",
+                              color: "#007bff",
+                              borderColor: "#007bff",
+                            },
+                          }}
+                        />
+                      ))}
+                    </FormGroup>
+                  </TabPanel>
+                ))}
               </TabContext>
+
               <div>
                 <div
                   sx={{
@@ -354,15 +407,16 @@ export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
                       color: "black",
                       border: "1px solid #ccc",
                       borderRadius: "8px",
-                      position: "absolute", // or "absolute" if it's inside a relative container
-                      bottom: 16, // distance from the bottom of the page/container
-                      left: 700, // distance from the right of the page/container
+                      position: "absolute",
+                      bottom: 16,
+                      left: 700,
                       "&:hover": {
                         backgroundColor: "navy",
                         color: "white",
                         borderColor: "#007bff",
                       },
                     }}
+                    onClick={handleButtonClick}
                   >
                     Confirm
                   </Button>
@@ -383,9 +437,9 @@ export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
                       color: "black",
                       border: "1px solid #ccc",
                       borderRadius: "8px",
-                      position: "absolute", // or "absolute" if it's inside a relative container
-                      bottom: 16, // distance from the bottom of the page/container
-                      left: 625, // distance from the right of the page/container
+                      position: "absolute",
+                      bottom: 16,
+                      left: 625,
                       "&:hover": {
                         backgroundColor: "Navy",
                         color: "white",
@@ -450,7 +504,7 @@ export default function PrimarySearchAppBar({ title, data, setFilteredData }) {
             <div
               style={{
                 padding: "0 8px",
-                color: "grey", // Color for the icon
+                color: "grey",
               }}
             >
               <SearchIcon />
